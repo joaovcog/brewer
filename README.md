@@ -1,2 +1,2 @@
-# brewer
-A project developed for learning Spring, from the course Spring Framework Expert, by AlgaWorks
+# Brewer
+Projeto desenvolvido durante o curso Spring Framework Expert, da Algaworks.
