@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -55,7 +55,7 @@ public class ClienteController {
 		return mv;
 	}
 
-	@RequestMapping(value = { "/novo", "{\\d+}" }, method = RequestMethod.POST)
+	@PostMapping(value = { "/novo", "{\\d+}" })
 	public ModelAndView salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return novo(cliente);
@@ -98,6 +98,7 @@ public class ClienteController {
 		Cliente cliente = clienteRepository.buscarComCidadeEstado(codigo);
 		
 		ModelAndView mv = novo(cliente);
+		
 		mv.addObject(cliente);
 
 		return mv;
