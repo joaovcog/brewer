@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.Venda;
 import com.algaworks.brewer.repository.VendaRepository;
+import com.algaworks.brewer.service.event.venda.VendaCanceladaEvent;
+import com.algaworks.brewer.service.event.venda.VendaEmitidaEvent;
 
 @Service
 public class CadastroVendaService {
@@ -18,6 +21,9 @@ public class CadastroVendaService {
 	@Autowired
 	private VendaRepository vendaRepository;
 
+	@Autowired
+	private ApplicationEventPublisher publisher;
+	
 	@Transactional
 	public Venda salvar(Venda venda) {
 		if (venda.isSalvarProibido()) {
@@ -44,6 +50,8 @@ public class CadastroVendaService {
 	public void emitir(Venda venda) {
 		venda.setStatus(StatusVenda.EMITIDA);
 		salvar(venda);
+		
+		publisher.publishEvent(new VendaEmitidaEvent(venda));
 	}
 	
 	@PreAuthorize("#venda.usuario == principal.usuario or hasRole('CANCELAR_VENDA')")
@@ -53,6 +61,8 @@ public class CadastroVendaService {
 		
 		vendaExistente.setStatus(StatusVenda.CANCELADA);
 		vendaRepository.save(vendaExistente);
+		
+		publisher.publishEvent(new VendaCanceladaEvent(venda));
 	}
 
 }

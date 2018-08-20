@@ -22,6 +22,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.StringUtils;
 
@@ -29,6 +30,7 @@ import com.algaworks.brewer.validation.SKU;
 
 @Entity
 @Table(name = "cervejas")
+@DynamicUpdate
 public class Cerveja implements Serializable {
 
 	private static final long serialVersionUID = 1L;
