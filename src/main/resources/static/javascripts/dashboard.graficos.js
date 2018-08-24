@@ -27,7 +27,7 @@ Brewer.GraficoVendaPorMes = (function() {
 				labels: meses, 
 				datasets: [{
 					label: 'Vendas por mês',
-					backgroundColor: 'rgba(26, 179, 148, 0.5', 
+					backgroundColor: 'rgba(26, 179, 148, 0.5)', 
 					pointBorderColor: 'rgba(26, 179, 148, 1)', 
 					pointBackgroundColor: '#fff', 
 					data: valores
@@ -39,8 +39,55 @@ Brewer.GraficoVendaPorMes = (function() {
 	return GraficoVendaPorMes;
 }());
 
+Brewer.GraficoVendaPorOrigem = (function() {
+	function GraficoVendaPorOrigem() {
+		this.ctx = $('#graficoVendasPorOrigem')[0].getContext('2d');
+	}
+	
+	GraficoVendaPorOrigem.prototype.iniciar = function() {
+		$.ajax({
+			url: 'vendas/totalPorOrigem', 
+			method: 'GET', 
+			success: onDadosRecebidos.bind(this)
+		});
+	}
+	
+	function onDadosRecebidos(vendaOrigem) {
+		var meses = [];
+		var nacionais = [];
+		var internacionais = [];
+		vendaOrigem.forEach(function(obj) {
+			meses.unshift(obj.mes);
+			nacionais.unshift(obj.totalNacional);
+			internacionais.unshift(obj.totalInternacional);
+		});
+		
+		var graficoVendasPorOrigem = new Chart(this.ctx, {
+			type: 'bar',
+			data: {
+				labels: meses, 
+				datasets: [{
+					label: 'Nacional',
+					backgroundColor: 'rgba(220, 220, 220, 0.5)', 
+					data: nacionais
+				}, 
+				{
+					label: 'Internacional', 
+					backgroundColor: 'rgba(26, 179, 148, 0.5)', 
+					data: internacionais
+				}]
+			}
+		});
+	}
+	
+	return GraficoVendaPorOrigem;
+}());
+
 
 $(function() {
 	var graficoVendaPorMes = new Brewer.GraficoVendaPorMes();
 	graficoVendaPorMes.iniciar();
+	
+	var graficoVendaPorOrigem = new Brewer.GraficoVendaPorOrigem();
+	graficoVendaPorOrigem.iniciar();
 });

@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.MonthDay;
 import java.time.Year;
 import java.util.List;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.algaworks.brewer.dto.VendaMes;
+import com.algaworks.brewer.dto.VendaOrigem;
 import com.algaworks.brewer.model.StatusVenda;
 import com.algaworks.brewer.model.TipoPessoa;
 import com.algaworks.brewer.model.Venda;
@@ -117,6 +117,26 @@ public class VendaRepositoryImpl implements VendaRepositoryQueries {
 		}
 		
 		return vendasMes;
+	}
+	
+	@Override
+	public List<VendaOrigem> totalPorOrigem() {
+		List<VendaOrigem> vendasOrigem = manager.createNamedQuery("Vendas.totalPorOrigem", VendaOrigem.class).getResultList();
+		
+		LocalDate hoje = LocalDate.now();
+		
+		for (int i = 1; i <= 6; i++) {
+			String mesIdeal = String.format("%d/%02d", hoje.getYear(), hoje.getMonthValue());
+			boolean possuiMes = vendasOrigem.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
+			
+			if (!possuiMes) {
+				vendasOrigem.add(i - 1, new VendaOrigem(mesIdeal, 0, 0));
+			}
+			
+			hoje = hoje.minusMonths(1);
+		}
+		
+		return vendasOrigem;
 	}
 	
 	private Long total(VendaFilter filtro) {

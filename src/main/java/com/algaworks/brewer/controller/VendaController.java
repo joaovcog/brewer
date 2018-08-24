@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.controller.validator.VendaValidator;
 import com.algaworks.brewer.dto.VendaMes;
+import com.algaworks.brewer.dto.VendaOrigem;
 import com.algaworks.brewer.mail.Mailer;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.ItemVenda;
@@ -202,6 +203,11 @@ public class VendaController {
 	@GetMapping("/totalPorMes")
 	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
 		return vendaRepository.totalPorMes();
+	}
+	
+	@GetMapping("/totalPorOrigem")
+	public @ResponseBody List<VendaOrigem> listarTotalVendaPorOrigem() {
+		return vendaRepository.totalPorOrigem();
 	}
 
 	private void setUuid(Venda venda) {
