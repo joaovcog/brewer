@@ -32,13 +32,13 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-
+	
 	@Override
 	protected Filter[] getServletFilters() {
 		HttpPutFormContentFilter httpPutFormContentFilter = new HttpPutFormContentFilter();
-		return new Filter[] { httpPutFormContentFilter };
+        return new Filter[] { httpPutFormContentFilter };
 	}
-
+	
 	@Override
 	protected void customizeRegistration(Dynamic registration) {
 		registration.setMultipartConfig(new MultipartConfigElement(""));
@@ -47,7 +47,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
-		servletContext.setInitParameter("spring.profiles.default", "local");
+		servletContext.setInitParameter("spring.profiles.default", "prod");
 	}
 
 }
