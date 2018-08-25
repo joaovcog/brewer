@@ -8,10 +8,10 @@ Brewer.MaskMoney = (function() {
 	}
 	
 	MaskMoney.prototype.enable = function() {
-		//this.decimal.maskMoney({ decimal: ',', thousands: '.'});
-		//this.plain.maskMoney({ precision: 0, thousands: '.', decimal: '' });
-		this.decimal.maskNumber({ decimal: ',', thousands: '.'});
-		this.plain.maskNumber({ integer: true, thousands: '.' });
+		this.decimal.maskMoney({ decimal: ',', thousands: '.'});
+		this.plain.maskMoney({ precision: 0, thousands: '.', decimal: '' });
+		//this.decimal.maskNumber({ decimal: ',', thousands: '.'});
+		//this.plain.maskNumber({ integer: true, thousands: '.' });
 	}
 	
 	return MaskMoney;
