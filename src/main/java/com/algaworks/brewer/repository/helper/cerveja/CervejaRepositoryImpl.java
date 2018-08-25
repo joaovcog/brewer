@@ -22,6 +22,7 @@ import com.algaworks.brewer.dto.EstoqueDTO;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
+import com.algaworks.brewer.storage.FotoStorage;
 
 public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 
@@ -30,7 +31,10 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 
 	@Autowired
 	private PaginacaoUtil paginacaoUtil;
-
+	
+	@Autowired
+	private FotoStorage fotoStorage;
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
@@ -103,6 +107,8 @@ public class CervejaRepositoryImpl implements CervejaRepositoryQueries {
 
 		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
 				.setParameter("skuNome", skuNome + "%").getResultList();
+		
+		cervejasFiltradas.forEach(c -> c.setUrlThumbnailFoto(fotoStorage.getUrl(FotoStorage.THUMBNAIL_PREFIX + c.getFoto())));
 
 		return cervejasFiltradas;
 	}

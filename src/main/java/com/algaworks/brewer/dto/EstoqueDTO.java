@@ -17,6 +17,9 @@ public class EstoqueDTO {
 	}
 
 	public BigDecimal getValorItens() {
+		if (valorItens == null) {
+			valorItens = BigDecimal.ZERO;
+		}
 		return valorItens;
 	}
 
@@ -25,6 +28,10 @@ public class EstoqueDTO {
 	}
 
 	public Long getQuantidadeItens() {
+		if (quantidadeItens == null) {
+			quantidadeItens = 0L;
+		}
+		
 		return quantidadeItens;
 	}
 
